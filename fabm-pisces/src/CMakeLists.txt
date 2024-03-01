@@ -6,7 +6,7 @@ add_library(fabm_models_pisces OBJECT
             daylength.F90
             turbocline.F90
             shear.F90
-	    #optics.F90
+	    optics.F90
 	    optics_ext.F90
             carbonate_chemistry.F90
             oxygen.F90
