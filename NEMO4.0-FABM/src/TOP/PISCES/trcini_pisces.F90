@@ -201,9 +201,9 @@ CONTAINS
          trn(:,:,:,jpdsi) = bioma0 * 0.15
          trn(:,:,:,jpgsi) = bioma0 * 5.e-6
          trn(:,:,:,jpphy) = bioma0
-         trn(:,:,:,jpdia) = 0. !bioma0
-         trn(:,:,:,jpzoo) = 0. !bioma0
-         trn(:,:,:,jpmes) = 0. !bioma0
+         trn(:,:,:,jpdia) = bioma0
+         trn(:,:,:,jpzoo) = bioma0
+         trn(:,:,:,jpmes) = bioma0
          trn(:,:,:,jpfer) = 0.6E-9
          trn(:,:,:,jpsfe) = bioma0 * 5.e-6
          trn(:,:,:,jpdfe) = bioma0 * 5.e-6
