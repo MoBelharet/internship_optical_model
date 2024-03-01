@@ -78,9 +78,13 @@
           <field field_ref="oxy_O2"    name="O2" > oxy_O2 * 1e6 </field>
 	</file>
 
-       <file id="file6" name_suffix="_diad_T" description="additional lobster diagnostics" >
+	<file id="file6" name_suffix="_diad_T" description="additional lobster diagnostics" >
 
-          <field field_ref="optics_etot"    name="PAR" />
+		<field field_ref="light_swr_400_500"    name="light_swr_400_500" />
+		<field field_ref="light_swr_500_600"    name="light_swr_500_600" />
+		<field field_ref="light_swr_600_700"    name="light_swr_600_700" />
+
+          <!--field field_ref="optics_etot"    name="PAR" /-->
           <!--field field_ref="optics_etot_ndcy"   name="etot_ndcy" />
           <field field_ref="turbocline_hmld" name="hmld" />
           <field field_ref="shear_xdiss"     name="shear_rate" />
@@ -127,7 +131,7 @@
 
 
 
-          <field field_ref="phy_xfracal"   name = "xfracal" />
+          <!--field field_ref="phy_xfracal"   name = "xfracal" />
           <field field_ref="phy_zrespp"   name="zresp"/>
           <field field_ref="phy_ztortp"   name="ztortp" />
 
@@ -136,7 +140,7 @@
           <field field_ref="phy_PPNEW"  name="zpronew" />
 
 
-          <field field_ref="phy_PFe"  name="zprofe" />
+          <field field_ref="phy_PFe"  name="zprofe" /-->
 
 
        </file>
@@ -155,7 +159,7 @@
             <field field_ref="optics_par0" name = "par0" />
             <field field_ref="migration_vertical_distribution_migrator_presence" name = "migrator_presence" />
             <field field_ref="migration_move_thickness" name = "thickness" />
-            <field field_ref="migration_vertical_distribution_parmean" name = "parmean" />
+            <field field_ref="migration_vertical_distribution_parmean" name = "parmean" /-->
             <!--field field_ref="migration_vertical_weights_parmean0" name = "parmean0" /-->
             <!--field field_ref="optics_v_zqsr"  name="qsr_mean" />
             <field field_ref="optics_v_dqsr"  name="qsr" />

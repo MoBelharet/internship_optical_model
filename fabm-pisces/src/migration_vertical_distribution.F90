@@ -53,10 +53,11 @@ contains
     real(rk) :: weights
     real(rk) :: upper, lower, percent_upper_random, percent_lower_random
 
+    call random_seed()
 
    _LOOP_BEGIN_
 
-    call random_seed()
+    !call random_seed()
 
     !_GET_SURFACE_(self%id_parmean0,parmean0)
     !_GET_SURFACE_(self%id_par0,par0)

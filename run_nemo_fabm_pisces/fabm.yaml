@@ -1,8 +1,75 @@
+log: false
 instances:
+  light:
+    model: spectral/spectral
+    parameters:
+      lambda_method: 1                                     # choice of wavebands (0: custom range, 1: OASIM), default = 1
+      n_iop: 5                                            # number of inherent optical properties (IOPs), default = 0
+      iop1_type: 1                                         # type of IOP 1 (1: diatoms, 2: chlorophytes, 3: cyanobacteria, 4: coccolithophorids, 5: dinoflagellates, 6: detritus, 8: CDOC, 9: OM with custom absorption/scattering)
+      iop2_type: 5                                         # type of IOP 2 (1: diatoms, 2: chlorophytes, 3: cyanobacteria, 4: coccolithophorids, 5: dinoflagellates, 6: detritus, 8: CDOC, 9: OM with custom absorption/scattering)
+      iop3_type: 6                                         # type of IOP 3 (1: diatoms, 2: chlorophytes, 3: cyanobacteria, 4: coccolithophorids, 5: dinoflagellates, 6: detritus, 8: CDOC, 9: OM with custom absorption/scattering)
+      iop4_type: 6                                         # type of IOP 4 (1: diatoms, 2: chlorophytes, 3: cyanobacteria, 4: coccolithophorids, 5: dinoflagellates, 6: detritus, 8: CDOC, 9: OM with custom absorption/scattering)
+      iop5_type: 8                                         # type of IOP 4 (1: diatoms, 2: chlorophytes, 3: cyanobacteria, 4: coccolithophorids, 5: dinoflagellates, 6: detritus, 8: CDOC, 9: OM with custom absorption/scattering)
+      spectral_output: 0 #2                                   # spectral output (0: none, 1: full, 2: selected wavelengths), default = 0
+      # nlambda_out: 6                                       # number of wavebands for spectral output
+      # lambda1_out: 412.0                                   # output wavelength 1
+      # lambda2_out: 443.0                                   # output wavelength 2
+      # lambda3_out: 490.0                                   # output wavelength 3
+      # lambda4_out: 510.0                                   # output wavelength 4
+      # lambda5_out: 555.0                                   # output wavelength 5
+      # lambda6_out: 665.0                                   # output wavelength 6
+    coupling:
+      iop1: dia
+      iop2: phy
+      iop3: pom
+      iop4: gom
+      iop5: dom
+  relhum:
+    model: spectral/relhum
+  viz:
+    model: horizontal_constant
+    parameters:
+      standard_name: visibility_in_air                     # standard name, default =
+      value: 25000.0                                       # value
+  clw:
+    model: horizontal_constant
+    parameters:
+      standard_name: atmosphere_mass_content_of_cloud_liquid_water                     # standard name, default =
+      value: 0.5
+  oz:
+    model: spectral/ozone
+  wv:
+    model: horizontal_constant
+    parameters:
+      standard_name: atmosphere_mass_content_of_water_vapor                     # standard name, default =
+      value: 15.
+  aero:
+    model: horizontal_constant
+    parameters:
+      standard_name: aerosol_air_mass_type                 # standard name, default =
+      value: 10.0                                          # value
+  cloud:
+    model: horizontal_constant
+    parameters:
+      standard_name: cloud_area_fraction
+      value: 0.3
+  humidity:
+    model: horizontal_constant
+    parameters:
+      standard_name: surface_specific_humidity
+      value: 0.5
   optics:
-    model: pisces/optics
+    model: pisces/optics_ext
     parameters:
       ln_varpar: false
+    coupling:
+      r: light/swr_600_700
+      g: light/swr_500_600
+      b: light/swr_400_500
+      #optics:
+      #model: pisces/optics
+      #parameters:
+      #ln_varpar: false
   no3:
     long_name: nitrate
     model: pisces/tracer
@@ -143,7 +210,7 @@ instances:
       pom: pom
       gom: gom
     initialization:
-      c:  0. #1.e-8
+      c:  1.e-8
       ch: 0.0021818182e-6
       si: 0.15e-8
       fe: 5.e-14
@@ -180,7 +247,7 @@ instances:
       part: 0.5
       xgrazcal: 0. #new parameter by Mokrane
     initialization:
-      c: 0. #1.e-8
+      c: 1.e-8
     coupling:
       dia: dia
       phy: phy
@@ -214,7 +281,7 @@ instances:
       part: 0.75
       xsizedia: 10.
     initialization:
-      c: 0. #1.e-8
+      c: 1.e-8
     coupling:
       dia: dia
       phy: phy

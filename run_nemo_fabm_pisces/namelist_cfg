@@ -38,9 +38,9 @@
 !-----------------------------------------------------------------------
 &namrun        !   parameters of the run
 !-----------------------------------------------------------------------
-   cn_exp      = "C1D_PAPA_fabm_test_nano"!  experience name
+   cn_exp      = "data/C1D_PAPA_fabm_spectral"!  experience name
    nn_it000    =       1   !  first time step
-   nn_itend    =   8760   !  last  time step (std 5475) = (nb_année * 3600 * 24 * 365)/rn_rdt
+   nn_itend    =     8760  !  last  time step (std 5475) = (nb_année * 3600 * 24 * 365)/rn_rdt
    nn_date0    = 20100615  !  date at nit_0000 (format yyyymmdd) used if ln_rstart=F or (ln_rstart=T and nn_rstctl=0 or 1)
    nn_stock    =   87600   !  frequency of creation of a restart file (modulo referenced to 1)
    nn_write    =     240   !  frequency of write in the output file   (modulo referenced to nn_it000)

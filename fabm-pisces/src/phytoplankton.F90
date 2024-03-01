@@ -508,7 +508,7 @@ contains
          _ADD_SOURCE_(self%id_c, zprorca * self%texcret)
          !-------- Mokrane ------
 
-         !_ADD_SOURCE_(self%id_fe, zprofe * self%texcret)
+         _ADD_SOURCE_(self%id_fe, zprofe * self%texcret)
          _ADD_SOURCE_(self%id_doc, zdocprod)
          _ADD_SOURCE_(self%id_oxy, o2ut * zproreg + ( o2ut + o2nit ) * zpronew)
          !

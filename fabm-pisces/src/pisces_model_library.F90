@@ -5,7 +5,8 @@ module pisces_model_library
    use pisces_tracer
    use pisces_phytoplankton
    use pisces_zooplankton
-   use pisces_optics
+!   use pisces_optics
+   use pisces_optics_ext
    use pisces_carbonate_chemistry
    use pisces_oxygen
    use pisces_daylength
@@ -45,7 +46,8 @@ contains
          case ('tracer');              allocate(type_pisces_tracer::model)
          case ('phytoplankton');       allocate(type_pisces_phytoplankton::model)
          case ('zooplankton');         allocate(type_pisces_zooplankton::model)
-         case ('optics');              allocate(type_pisces_optics::model)
+ !        case ('optics');              allocate(type_pisces_optics::model)
+         case ('optics_ext');              allocate(type_pisces_optics_ext::model)
          case ('carbonate_chemistry'); allocate(type_pisces_carbonate_chemistry::model)
          case ('oxygen');              allocate(type_pisces_oxygen::model)
          case ('daylength');           allocate(type_pisces_daylength::model)

@@ -58,12 +58,14 @@ subroutine depth_integral_do_column(self, _ARGUMENTS_DO_COLUMN_)
     
     iteration = 0._rk
 
+    call random_seed()
+
     _VERTICAL_LOOP_BEGIN_
      
      iteration = iteration + 1
 
     _GET_SURFACE_(self%id_parmean0,parmean0)
-    call random_seed()
+    !call random_seed()
 
    ! _VERTICAL_LOOP_BEGIN_
 

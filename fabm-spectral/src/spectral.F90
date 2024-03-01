@@ -36,6 +36,11 @@ module fabm_spectral
       type (type_diagnostic_variable_id), dimension(:), allocatable :: id_band_dir, id_band_dif, id_a_band, id_b_band, id_Kd
       type (type_diagnostic_variable_id), dimension(:,:), allocatable :: id_a_iop
       real(rk), dimension(:), allocatable :: lambda, lambda_bounds, par_weights, par_E_weights, swr_weights, uv_weights, F, lambda_out
+
+      real(rk), dimension(:), allocatable :: swr_400_500_weights, swr_500_600_weights, swr_600_700_weights
+      type (type_diagnostic_variable_id) :: id_swr_400_500, id_swr_500_600, id_swr_600_700
+      type (type_horizontal_diagnostic_variable_id) :: id_swr_400_500_sf_w, id_swr_500_600_sf_w, id_swr_600_700_sf_w
+
       real(rk), dimension(:), allocatable :: exter
       real(rk), dimension(:), allocatable :: a_o, a_u, a_v, tau_r
       real(rk), dimension(:), allocatable :: a_w, b_w, a_w_out, b_w_out
@@ -211,6 +216,13 @@ contains
       call calculate_integral_weights(300._rk, 400._rk, self%nlambda, self%lambda, self%uv_weights)
       self%par_E_weights(:) = self%par_weights * self%lambda /(Planck*lightspeed)/Avogadro*1e-3_rk ! divide by 1e9 to go from nm to m, multiply by 1e6 to go from mol to umol
 
+      allocate(self%swr_400_500_weights(self%nlambda))
+      allocate(self%swr_500_600_weights(self%nlambda))
+      allocate(self%swr_600_700_weights(self%nlambda))
+      call calculate_integral_weights(400._rk, 500._rk, self%nlambda, self%lambda, self%swr_400_500_weights)
+      call calculate_integral_weights(500._rk, 600._rk, self%nlambda, self%lambda, self%swr_500_600_weights)
+      call calculate_integral_weights(600._rk, 700._rk, self%nlambda, self%lambda, self%swr_600_700_weights)
+
       call self%register_dependency(self%id_lon, standard_variables%longitude)
       call self%register_dependency(self%id_lat, standard_variables%latitude)
       call self%register_dependency(self%id_wind_speed, standard_variables%wind_speed)
@@ -265,6 +277,13 @@ contains
       call self%register_diagnostic_variable(self%id_swr_abs, 'swr_abs', 'W/m^2',      'absorption of shortwave energy in layer', standard_variable=standard_variables%net_rate_of_absorption_of_shortwave_energy_in_layer, source=source_do_column)
       call self%register_diagnostic_variable(self%id_par_E_dif, 'par_E_dif', 'W/m^2',      'diffusive downwelling photosynthetic photon flux', source=source_do_column)
       !call self%register_diagnostic_variable(self%id_secchi,  'secchi',  'm',          'Secchi depth (1.7/Kd 490)', standard_variable=standard_variables%secchi_depth, source=source_do_column)
+
+      call self%register_diagnostic_variable(self%id_swr_400_500, 'swr_400_500', 'W/m^2', 'downwelling shortwave flux between 400 and 500 nm', source=source_do_column)
+      call self%register_diagnostic_variable(self%id_swr_500_600, 'swr_500_600', 'W/m^2', 'downwelling shortwave flux between 500 and 600 nm', source=source_do_column)
+      call self%register_diagnostic_variable(self%id_swr_600_700, 'swr_600_700', 'W/m^2', 'downwelling shortwave flux between 600 and 700 nm', source=source_do_column)
+      call self%register_diagnostic_variable(self%id_swr_400_500_sf_w, 'swr_400_500_sf_w', 'W/m^2', 'downwelling shortwave flux between 400 and 500 nm, below water surface', source=source_do_column)
+      call self%register_diagnostic_variable(self%id_swr_500_600_sf_w, 'swr_500_600_sf_w', 'W/m^2', 'downwelling shortwave flux between 500 and 600 nm, below water surface', source=source_do_column)
+      call self%register_diagnostic_variable(self%id_swr_600_700_sf_w, 'swr_600_700_sf_w', 'W/m^2', 'downwelling shortwave flux between 600 and 700 nm, below water surface', source=source_do_column)
 
       ! Interpolate absorption and scattering spectra to user wavelength grid
       allocate(self%a_w(self%nlambda), self%b_w(self%nlambda))
@@ -534,6 +553,10 @@ contains
       _SET_HORIZONTAL_DIAGNOSTIC_(self%id_swr_sf_w,  swr_J) ! Total shortwave radiation (W/m2) [up to 4000 nm]
       _SET_HORIZONTAL_DIAGNOSTIC_(self%id_uv_sf_w, uv_J)    ! UV (W/m2)
 
+      _SET_HORIZONTAL_DIAGNOSTIC_(self%id_swr_400_500_sf_w, sum(self%swr_400_500_weights * spectrum))
+      _SET_HORIZONTAL_DIAGNOSTIC_(self%id_swr_500_600_sf_w, sum(self%swr_500_600_weights * spectrum))
+      _SET_HORIZONTAL_DIAGNOSTIC_(self%id_swr_600_700_sf_w, sum(self%swr_600_700_weights * spectrum))
+
       _DOWNWARD_LOOP_BEGIN_
          ! Save downwelling shortwave flux at top of the layer
          swr_top = swr_J
@@ -595,6 +618,10 @@ contains
          _SET_DIAGNOSTIC_(self%id_swr,  swr_J)  ! Total shortwave radiation (W/m2) [up to 4000 nm]
          _SET_DIAGNOSTIC_(self%id_uv, uv_J)     ! UV (W/m2)
          _SET_DIAGNOSTIC_(self%id_par_E_dif, sum(self%par_E_weights * diffuse)) ! Diffuse Photosynthetically Active photon flux (umol/m2/s)
+
+         _SET_DIAGNOSTIC_(self%id_swr_400_500, sum(self%swr_400_500_weights * spectrum))
+         _SET_DIAGNOSTIC_(self%id_swr_500_600, sum(self%swr_500_600_weights * spectrum))
+         _SET_DIAGNOSTIC_(self%id_swr_600_700, sum(self%swr_600_700_weights * spectrum))
 
          ! Compute scalar PAR as experienced by phytoplankton
          spectrum = direct / costheta_r + diffuse / mcosthetas

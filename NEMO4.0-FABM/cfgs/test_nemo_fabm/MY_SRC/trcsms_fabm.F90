@@ -453,6 +453,7 @@ CONTAINS
       ! Send pointers to environmental data to FABM
       CALL model%link_interior_data(fabm_standard_variables%depth, gdept_n(:,:,:))
       CALL model%link_interior_data(fabm_standard_variables%temperature, tsn(:,:,:,jp_tem))
+      CALL model%link_horizontal_data(fabm_standard_variables%surface_temperature, tsn(:,:,1,jp_tem)) ! Mokrane
       CALL model%link_interior_data(fabm_standard_variables%practical_salinity, tsn(:,:,:,jp_sal))
       IF (ALLOCATED(rho)) CALL model%link_interior_data(fabm_standard_variables%density, rho(:,:,:))
       IF (ALLOCATED(prn)) CALL model%link_interior_data(fabm_standard_variables%pressure, prn)
